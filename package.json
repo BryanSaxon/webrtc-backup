@@ -1,7 +1,13 @@
 {
-  "name": "into-webrtc",
+  "name": "webrtc-backup",
   "version": "0.0.1",
   "private": true,
+  "description": "Backup / sample application for WebRTC.",
+  "author": "bryansaxon",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "coffee-script": "^1.12.7",
     "connect": "^3.7.0",
