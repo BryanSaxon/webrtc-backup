@@ -1,7 +1,7 @@
+const PORT = process.env.PORT || 3000;
+
 let express = require('express.io');
 let app = express();
-
-const PORT = 5000;
 
 app.http().io();
 app.use(express.static(__dirname + '/public'));
