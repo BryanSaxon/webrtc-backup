@@ -6,8 +6,7 @@
   "author": "bryansaxon",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "coffee-script": "^1.12.7",
