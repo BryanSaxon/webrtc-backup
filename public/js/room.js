@@ -1,5 +1,7 @@
-const ROOM = 'chat';
-const SIGNAL_ROOM = 'signal';
+const url = window.location.pathname;
+const id = url.substring(url.lastIndexOf('/') + 1);
+const ROOM = 'chat-' + id;
+const SIGNAL_ROOM = 'signal-' + id;
 let rtcPeerConn;
 
 io = io.connect();
@@ -29,8 +31,7 @@ io.emit('signal', {
 });
 
 io.on('signalingMessage', (data) => {
-  console.log(data);
-  displayMessage('Signal received: ' + data.type);
+  console.log('Signal received: ' + data.type);
 
   if (!rtcPeerConn)
     startSignaling();
@@ -54,7 +55,7 @@ io.on('signalingMessage', (data) => {
 });
 
 function startSignaling() {
-  displayMessage('Starting signaling...');
+  console.log('Starting signaling...');
 
   rtcPeerConn = new RTCPeerConnection({
     'iceServers': [{
@@ -71,18 +72,23 @@ function startSignaling() {
       });
   };
 
-  displayMessage('Completed the ice candidate.');
+  console.log('Completed the ice candidate.');
 
   rtcPeerConn.onnegotiationneeded = () => {
-    displayMessage('On negotiation called.');
+    console.log('On negotiation called.');
     rtcPeerConn.createOffer(sendLocalDesc, logError);
   };
 
   rtcPeerConn.onaddstream = (event) => {
-    displayMessage('Going to add their stream.');
+    console.log('Going to add their stream.');
 
-    let theirVideoArea = document.querySelector('#theirStream');
-    theirVideoArea.srcObject = event.stream;
+    let theirStream = document.querySelector('#theirStream');
+    let theirStreamContainer = document.querySelector('#theirStreamContainer');
+    let theirStatic = document.querySelector('#theirStatic');
+
+    theirStream.srcObject = event.stream;
+    theirStatic.classList.add('d-none');
+    theirStreamContainer.classList.remove('d-none');
   };
 
   navigator.getUserMedia = navigator.getUserMedia ||
@@ -94,10 +100,16 @@ function startSignaling() {
     video: true,
     audio: true
   }, (stream) => {
-    displayMessage('Displaying my stream.')
+    console.log('Displaying my stream.');
 
     let myVideoArea = document.querySelector('#myStream');
+    let myStreamContainer = document.querySelector('#theirStreamContainer');
+    let myStatic = document.querySelector('#theirStatic');
+
     myVideoArea.srcObject = stream;
+    myStatic.classList.add('d-none');
+    myStreamContainer.classList.remove('d-none');
+
     rtcPeerConn.addStream(stream);
   }, (error) => {
     console.log(error);
@@ -105,9 +117,9 @@ function startSignaling() {
 }
 
 function sendLocalDesc(desc) {
-  console.log(desc);
   rtcPeerConn.setLocalDescription(desc, () => {
-    displayMessage('Send local description.');
+    console.log('Send local description.');
+
     io.emit('signal', {
       "type": "SDP",
       "message": JSON.stringify({ 'sdp': rtcPeerConn.localDescription }),
@@ -117,7 +129,7 @@ function sendLocalDesc(desc) {
 }
 
 function logError(error) {
-  displayMessage(error.name + ': ' + error.message);
+  console.log(error.name + ': ' + error.message);
 }
 
 let sendMessage = document.querySelector('#sendMessage');

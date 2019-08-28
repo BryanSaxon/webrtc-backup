@@ -12,6 +12,10 @@ app.get('/', (req, res) => {
   res.render('index.ejs');
 });
 
+app.get('/room/:id', (req, res) => {
+  res.render('room.ejs', { id: req.params.id });
+});
+
 app.io.route('ready', (req) => {
   req.io.join(req.data.chatRoom);
   req.io.join(req.data.signalRoom);
