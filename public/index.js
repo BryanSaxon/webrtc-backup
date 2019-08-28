@@ -92,7 +92,7 @@ function startSignaling() {
 
   navigator.getUserMedia({
     video: true,
-    audio: false
+    audio: true
   }, (stream) => {
     displayMessage('Displaying my stream.')
 
