@@ -102,11 +102,11 @@ function startSignaling() {
   }, (stream) => {
     console.log('Displaying my stream.');
 
-    let myVideoArea = document.querySelector('#myStream');
+    let myStream = document.querySelector('#myStream');
     let myStreamContainer = document.querySelector('#theirStreamContainer');
     let myStatic = document.querySelector('#theirStatic');
 
-    myVideoArea.srcObject = stream;
+    myStream.srcObject = stream;
     myStatic.classList.add('d-none');
     myStreamContainer.classList.remove('d-none');
 
