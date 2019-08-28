@@ -103,8 +103,8 @@ function startSignaling() {
     console.log('Displaying my stream.');
 
     let myStream = document.querySelector('#myStream');
-    let myStreamContainer = document.querySelector('#theirStreamContainer');
-    let myStatic = document.querySelector('#theirStatic');
+    let myStreamContainer = document.querySelector('#myStreamContainer');
+    let myStatic = document.querySelector('#myStatic');
 
     myStream.srcObject = stream;
     myStatic.classList.add('d-none');
