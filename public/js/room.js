@@ -155,16 +155,16 @@ sendMessage.addEventListener('click', (event) => {
 
 function getConnectionStats() {
   window.rtcConn.getStats(null).then(stats => {
-    let statsOutput = "";
+    let output = {};
 
     stats.forEach(report => {
-      if (report.type === "inbound-rtp" && report.kind === "video") {
-        Object.keys(report).forEach(statName => {
-          statsOutput += `<strong>${statName}:</strong> ${report[statName]}<br>\n`;
+      if (report.type === 'inbound-rtp' && report.kind === 'video') {
+        Object.keys(report).map(stat => {
+          output[stat] = report[stat];
         });
       }
     });
 
-    console.log(statsOutput);
+    console.log(output);
   });
 }
