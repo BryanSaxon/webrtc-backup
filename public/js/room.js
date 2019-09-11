@@ -63,6 +63,9 @@ function startSignaling() {
     }]
   });
 
+  window.rtcConn = rtcPeerConn;
+  window.setInterval(getConnectionStats, 1000);
+
   rtcPeerConn.onicecandidate = (event) => {
     if (event.candidate)
       io.emit('signal', {
@@ -149,3 +152,19 @@ sendMessage.addEventListener('click', (event) => {
   myMessage.value = '';
   myMessage.focus();
 });
+
+function getConnectionStats() {
+  window.rtcConn.getStats(null).then(stats => {
+    let statsOutput = "";
+
+    stats.forEach(report => {
+      if (report.type === "inbound-rtp" && report.kind === "video") {
+        Object.keys(report).forEach(statName => {
+          statsOutput += `<strong>${statName}:</strong> ${report[statName]}<br>\n`;
+        });
+      }
+    });
+
+    console.log(statsOutput);
+  });
+}
